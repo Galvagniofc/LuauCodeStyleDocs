@@ -11,36 +11,35 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "Introduction"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Project Structure",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "groups/project-structure/overview",
+              "groups/project-structure/packages"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Code Standards",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "groups/code-standards/naming-conventions",
+              "groups/code-standards/organization",
+              "groups/code-standards/comments"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Code Patterns",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "groups/code-patterns/conditionals",
+              "groups/code-patterns/tables-functions",
+              "groups/code-patterns/data-oriented-design"
             ]
           }
         ]
