@@ -28,6 +28,7 @@ Consistent naming conventions are fundamental to writing maintainable code. They
 > ```lua
 > local IsAlive = true
 > local HasItem = false
+> local CanShoot = true
 > ```
 >
 > **Common Boolean Prefixes:**
@@ -64,7 +65,7 @@ Consistent naming conventions are fundamental to writing maintainable code. They
 
 > ### **Avoid Abbreviations**
 >
-> Use full, descriptive names instead of abbreviations. Code is read more often than it's written, so prioritize clarity.
+> Use full, descriptive names instead of abbreviations, prioritize clarity.
 >
 > ```luau
 > -- CORRECT
@@ -85,17 +86,9 @@ Consistent naming conventions are fundamental to writing maintainable code. They
 > local WeaponInventory = {} -- {"Weapon1", "Weapon2"}
 > local RespawnLocation = workspace.RespawnPoint
 > 
-> local function ProcessItemPurchase()
->     
-> end
-> 
 > -- INCORRECT
 > local Items = {}                   -- What kind of items?
 > local Location = workspace.Spawn   -- Location for what?
-> 
-> local function Process()  -- Process what?
-> 
-> end
 > ```
 
 > ### **Functions**
@@ -116,94 +109,25 @@ Consistent naming conventions are fundamental to writing maintainable code. They
 
 ## String Formatting
 
-### **String Literals**
-
-Always use `double quotes ""` for string literals to maintain consistency.
-
-<Note>
-  When inserting variables into a string, you can use String interpolation
-
-  `` `Text {Variable}` ``.
-</Note>
+> ### **String Literals**
+>
+> Always use `double quotes ""` for string literals to maintain consistency.
+>
+> <Note>
+>   When inserting variables into a string, use String interpolation `` `idk {Variable}` ``.
+> </Note>
 
 ## Comments and Documentation
 
-### 💬 **Empty Table Comments**
-
-When creating empty tables, include a comment indicating what will be stored in them.
-
-```luau
--- ✅ Correct: Commented empty tables
-local ActivePlayers = {} -- {Player}
-local PlayerInventories = {} -- {[Player] = {ItemId}}
-local WeaponStats = {} -- {WeaponName = {Damage, Range, FireRate}}
-local QuestProgress = {} -- {[PlayerId] = {QuestId = Progress}}
-
--- ❌ Incorrect: Uncommented empty tables
-local ActivePlayers = {}        -- What goes here?
-local PlayerInventories = {}    -- Unknown structure
-local WeaponStats = {}          -- Unclear contents
-```
-
-## Practical Examples
-
-### 🎮 **Game System Example**
-
-```luau
--- ✅ Complete example following all conventions
-local PlayerCombatSystem = {}
-
--- Constants
-local DefaultPlayerHealth = 100
-local CriticalHitMultiplier = 2.0
-local RespawnDelaySeconds = 5
-
--- State tracking
-local ActiveCombatPlayers = {} -- {Player}
-local PlayerHealthValues = {} -- {[Player] = number}
-
--- Boolean flags
-local IsCombatEnabled = true
-local HasCombatStarted = false
-local CanPlayersRespawn = true
-
--- Events
-local OnPlayerDeath = Signal.new()
-local OnCombatStart = Signal.new()
-local OnPlayerRespawn = Signal.new()
-
--- Functions
-local function CalculateWeaponDamage(weaponType, baseDamage, isCriticalHit)
-    local damage = baseDamage
-    if isCriticalHit then
-        damage = damage * CriticalHitMultiplier
-    end
-    return damage
-end
-
-local function HandlePlayerDeath(player, killer)
-    PlayerHealthValues[player] = 0
-    OnPlayerDeath:Fire(player, killer)
-    
-    if CanPlayersRespawn then
-        task.wait(RespawnDelaySeconds)
-        RespawnPlayer(player)
-    end
-end
-
-return PlayerCombatSystem
-```
+> ### **Empty Table Comments**
+>
+> When creating empty tables, include a comment or a type indicating what will be stored in them.
+>
+> ```luau
+> local ActivePlayers = {} -- {Player}
+> local ActiveWeapons = {} :: {[string]: WeaponStats}
+> ```
 
 <Note>
-  **Remember**: Consistency is more important than personal preference. Once you establish a naming convention, apply it uniformly throughout your entire codebase.
+  Remember: Consistency is more important than personal preference. Once you establish a naming convention, apply it uniformly throughout your entire codebase.
 </Note>
-
-<Tip>
-  **Pro Tip**: Use your IDE's refactoring tools to rename variables and functions consistently across your project. This helps maintain naming standards when refactoring code.
-</Tip>
-
----
-
-<Info>
-  **Code Reviews**: During code reviews, pay special attention to naming conventions. Well-named code is self-documenting and reduces the need for extensive comments.
-</Info>
