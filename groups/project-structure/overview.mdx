@@ -5,10 +5,58 @@ description: "A well-organized project structure is the foundation of maintainab
 
 ## Folder Structure
 
-<img
-  src="/images/FolderStructure.png"
-  alt="Folder Structure"
-  title="Folder Structure"
-  className="mr-auto"
-  style={{ width:"38%" }}
-/>
+The folder structure below represents our standard organization for Roblox projects.
+
+![Folder Structure Pn](/images/FolderStructure.png)
+
+This folder structure is designed specifically for Rojo workflow integration. The default.project.json configuration below defines the necessary mappings to integrate this structure with your Roblox project.
+
+```json expandable
+{
+    "emitLegacyScripts": false,
+
+    "name": "Project-Name",
+    "tree": {
+      "$className": "DataModel",
+
+      "ReplicatedStorage": {
+        "$ignoreUnknownInstances": true,
+        "$path": "Source/Shared",
+
+        "Client": {
+            "$ignoreUnknownInstances": true,
+            "$path": "Source/Client",
+
+            "UI": {
+                "$ignoreUnknownInstances": true,
+                "$path": "Source/UI"
+            }
+        }
+      },
+
+      "ReplicatedFirst": {
+        "$ignoreUnknownInstances": true,
+        "$path": "Source/SharedFirst",
+
+        "Packages": {
+          "$ignoreUnknownInstances": true,
+          "$path": "Packages"
+        }
+      },
+
+      "ServerScriptService": {
+        "$ignoreUnknownInstances": true,
+        "$path": "Source/Server",
+
+        "ServerPackages": {
+            "$ignoreUnknownInstances": true,
+            "$path": "ServerPackages"
+        }
+      }
+  }
+}
+```
+
+## Structure Explanation
+
+/
