@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Luau Style Guide",
   "colors": {
-    "primary": "#548aff",
-    "light": "#548aff",
-    "dark": "#548aff"
+    "primary": "#3e8ef6",
+    "light": "#3e8ef6",
+    "dark": "#3e8ef6"
   },
   "favicon": "/LuauGuideFavIcon.svg",
   "navigation": {
