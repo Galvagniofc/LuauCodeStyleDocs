@@ -22,7 +22,7 @@
           {
             "group": "Project Structure",
             "pages": [
-              "groups/project-structure/overview",
+              "groups/project-structure/structure",
               "groups/project-structure/packages"
             ]
           },
