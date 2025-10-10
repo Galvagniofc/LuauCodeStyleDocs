@@ -1,5 +1,209 @@
 ---
-title: 'Naming Conventions'
-description: 'Description of your new file.'
+title: "Naming Conventions"
+description: "Consistent naming conventions that improve code readability and maintain uniformity across your entire codebase."
 ---
 
+Consistent naming conventions are fundamental to writing maintainable code. They reduce cognitive load, improve readability, and make collaboration more efficient. Our conventions prioritize clarity and consistency above all else.
+
+## Universal Rules
+
+> ### PascalCase for Everything
+>
+> We use `PascalCase` for all identifiers in our codebase. This creates a uniform, professional appearance and eliminates decision fatigue.
+>
+> <Note>
+>   Exceptions are made for constants, which should be written in `SCREAMING_SNAKE_CASE`
+> </Note>
+
+> ### English Only
+>
+> All code must be written in English. This ensures accessibility for international developers and maintains consistency across the codebase.
+
+## Specific Naming Patterns
+
+> ### Boolean Variables
+>
+> Boolean variables must be prefixed with **`Is`**, **`Has`**, or **`Can`** to clearly indicate their true/false nature.
+>
+> ```lua
+> local IsAlive = true
+> local HasItem = false
+> ```
+>
+> **Common Boolean Prefixes:**
+>
+> - **`Is`**: State or condition (`IsVisible`, `IsEnabled`, `IsReady`)
+> - **`Has`**: Possession or presence (`HasWeapon`, `HasAccess`, `HasCompleted`)
+> - **`Can`**: Ability or permission (`CanMove`, `CanAttack`, `CanPurchase`)
+
+> ### **Event Names**
+>
+> Event names must start with **`On`** to clearly identify them as event handlers or signals.
+>
+> ```lua
+> local function OnPlayerAdded(Player: Player)
+> 	-- Code Logic
+> end
+> 
+> Players.PlayerAdded:Connect(OnPlayerAdded)
+> ```
+
+> ### **Constants and Configuration**
+>
+> Avoid magic numbers by using descriptive constant names. Constants should clearly describe their purpose and value.
+>
+> <Note>
+>   Use `SCREAMING_SNAKE_CASE` for constants.
+> </Note>
+> ```luau
+> local PLAYER_WALK_SPEED = 25
+> local ROUND_COOLDOWN = 10
+> ```
+
+## Descriptive and Meaningful Names
+
+> ### **Avoid Abbreviations**
+>
+> Use full, descriptive names instead of abbreviations. Code is read more often than it's written, so prioritize clarity.
+>
+> ```luau
+> -- CORRECT
+> local Player = Players.LocalPlayer
+> local HumanoidRootPart = Character.HumanoidRootPart
+> 
+> -- INCORRECT
+> local Plr = Players.LocalPlayer
+> local Root = Character.HumanoidRootPart
+> ```
+
+> ### **Context-Specific Names**
+>
+> Names should be specific to their context and purpose. Avoid generic names that don't convey meaning.
+>
+> ```luau
+> -- CORRECT
+> local WeaponInventory = {} -- {"Weapon1", "Weapon2"}
+> local RespawnLocation = workspace.RespawnPoint
+> 
+> local function ProcessItemPurchase()
+>     
+> end
+> 
+> -- INCORRECT
+> local Items = {}                   -- What kind of items?
+> local Location = workspace.Spawn   -- Location for what?
+> 
+> local function Process()  -- Process what?
+> 
+> end
+> ```
+
+> ### **Functions**
+>
+> Function names should be verbs that clearly describe what the function does.
+>
+> ```luau
+> -- CORRECT
+> local function CalculatePlayerDamage()
+> 
+> end
+> 
+> -- INCORRECT
+> local function Calculate()  -- Calculate what?
+> 
+> end
+> ```
+
+## String Formatting
+
+### **String Literals**
+
+Always use `double quotes ""` for string literals to maintain consistency.
+
+<Note>
+  When inserting variables into a string, you can use String interpolation
+
+  `` `Text {Variable}` ``.
+</Note>
+
+## Comments and Documentation
+
+### 💬 **Empty Table Comments**
+
+When creating empty tables, include a comment indicating what will be stored in them.
+
+```luau
+-- ✅ Correct: Commented empty tables
+local ActivePlayers = {} -- {Player}
+local PlayerInventories = {} -- {[Player] = {ItemId}}
+local WeaponStats = {} -- {WeaponName = {Damage, Range, FireRate}}
+local QuestProgress = {} -- {[PlayerId] = {QuestId = Progress}}
+
+-- ❌ Incorrect: Uncommented empty tables
+local ActivePlayers = {}        -- What goes here?
+local PlayerInventories = {}    -- Unknown structure
+local WeaponStats = {}          -- Unclear contents
+```
+
+## Practical Examples
+
+### 🎮 **Game System Example**
+
+```luau
+-- ✅ Complete example following all conventions
+local PlayerCombatSystem = {}
+
+-- Constants
+local DefaultPlayerHealth = 100
+local CriticalHitMultiplier = 2.0
+local RespawnDelaySeconds = 5
+
+-- State tracking
+local ActiveCombatPlayers = {} -- {Player}
+local PlayerHealthValues = {} -- {[Player] = number}
+
+-- Boolean flags
+local IsCombatEnabled = true
+local HasCombatStarted = false
+local CanPlayersRespawn = true
+
+-- Events
+local OnPlayerDeath = Signal.new()
+local OnCombatStart = Signal.new()
+local OnPlayerRespawn = Signal.new()
+
+-- Functions
+local function CalculateWeaponDamage(weaponType, baseDamage, isCriticalHit)
+    local damage = baseDamage
+    if isCriticalHit then
+        damage = damage * CriticalHitMultiplier
+    end
+    return damage
+end
+
+local function HandlePlayerDeath(player, killer)
+    PlayerHealthValues[player] = 0
+    OnPlayerDeath:Fire(player, killer)
+    
+    if CanPlayersRespawn then
+        task.wait(RespawnDelaySeconds)
+        RespawnPlayer(player)
+    end
+end
+
+return PlayerCombatSystem
+```
+
+<Note>
+  **Remember**: Consistency is more important than personal preference. Once you establish a naming convention, apply it uniformly throughout your entire codebase.
+</Note>
+
+<Tip>
+  **Pro Tip**: Use your IDE's refactoring tools to rename variables and functions consistently across your project. This helps maintain naming standards when refactoring code.
+</Tip>
+
+---
+
+<Info>
+  **Code Reviews**: During code reviews, pay special attention to naming conventions. Well-named code is self-documenting and reduces the need for extensive comments.
+</Info>
