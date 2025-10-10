@@ -7,9 +7,11 @@ description: "A well-organized project structure is the foundation of maintainab
 
 The folder structure below represents our standard organization for Roblox projects.
 
-![Folder Structure Pn](/images/FolderStructure.jpeg)
+<Frame>
+  ![Folder Structure Pn](/images/FolderStructure.png)
+</Frame>
 
-This folder structure is designed specifically for Rojo workflow integration. The default.project.json configuration below defines the necessary mappings to integrate this structure with your Roblox project.
+This folder structure is designed specifically for `Rojo` workflow integration. The `default.project.json` configuration below defines the necessary mappings to integrate this structure with your Roblox project.                                                                               
 
 ```json expandable
 {
@@ -59,4 +61,90 @@ This folder structure is designed specifically for Rojo workflow integration. Th
 
 ## Structure Explanation
 
-/
+<Expandable title="Client">
+  **The Client folder contains all code that runs exclusively on the client side.**
+
+  - <u>EntryPoints</u>
+
+    Contains the main initialization scripts that bootstrap your client-side systems. These are typically the first scripts to run when a player joins.
+  - <u>Modules</u>
+
+    Reusable client-side modules that handle specific functionality.
+  - <u>ClientNetwork.luau</u>
+
+    Centralized networking module that handles all client-to-server communication. This provides a clean interface for the rest of your client code.
+</Expandable>
+
+<Expandable title="Server">
+  **The Server folder contains all code that runs exclusively on the server side.**
+
+  - <u>EntryPoints</u>
+
+    Main server initialization scripts that set up game systems, handle player connections, and start game loops.
+  - <u>Modules</u>
+
+    Reusable server-side modules that handle specific functionality.
+  - <u>Configuration</u>
+
+    Server-specific configuration files that control server behavior.
+
+
+  - <u>ServerNetwork.luau</u>
+
+    Centralized networking module that handles all server-to-client communication and validates incoming requests.
+</Expandable>
+
+<Expandable title="Shared">
+  **The Shared folder contains code that can be used by both client and server.**
+
+  - <u>Configuration</u>
+
+    Shared configuration files.
+
+
+  - <u>Products</u>
+
+    monetization-related modules that need to be accessible from both contexts.
+  - <u>Sounds</u>
+
+    Sound management modules and sound configurations.
+  - <u>Types</u>
+
+    Type definitions used throughout the codebase. Essential for maintaining type safety.
+  - <u>Utils</u>
+
+    Utility modules that provide common functionality needed across the entire codebase.
+</Expandable>
+
+<Expandable title="Shared First">
+  **A folder for scripts and modules that should be loaded before others.**
+
+  - Commonly used for Loading Screens, Assets preload, etc.
+</Expandable>
+
+<Expandable title="UI">
+  **The UI folder contains all user interface related code.**
+
+  - <u>Components</u>
+
+    Reusable UI components. These are the building blocks of your interface.
+
+
+  - <u>Interfaces</u>
+
+    Complete interface screens and layouts. Each interface represents a distinct screen or major UI section of your game.
+  - <u>Stories</u>
+
+    UI testing and development stories, typically used with tools like UI labs for UI development and testing.
+  - <u>Utils</u>
+
+    UI-specific utility modules.
+</Expandable>
+
+<Tip>
+  Use `PascalCase` for all folder and files names, Keep names descriptive and concise, avoid abbreviations.
+</Tip>
+
+<Tip>
+  Consider creating a `GitHub` repository template containing this project structure. For new projects, simply clone the repository to get started with the complete folder organization and configuration files already in place.
+</Tip>
