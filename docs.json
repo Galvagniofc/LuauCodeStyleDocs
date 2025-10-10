@@ -7,7 +7,7 @@
     "light": "#07C983",
     "dark": "#121214"
   },
-  "favicon": "/LuauGuideLogo.svg",
+  "favicon": "/LuauGuideFavIcon.svg",
   "navigation": {
     "tabs": [
       {
@@ -61,8 +61,8 @@
     }
   },
   "logo": {
-    "light": "LuauGuideLogo.svg",
-    "dark": "LuauGuideLogo.svg"
+    "light": "logo/LuauGuideLogo.svg",
+    "dark": "logo/LuauGuideLogo.svg"
   },
   "navbar": {
     "links": [
