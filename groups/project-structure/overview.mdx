@@ -66,17 +66,17 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 
   **The Client folder contains all code that runs exclusively on the client side.**
 
-  - EntryPoints: 
+  - `EntryPoints`
 
     Contains the main initialization scripts that bootstrap your client-side systems. These are typically the first scripts to run when a player joins.
 
     ㅤ
-  - Modules: 
+  - `Modules`
 
     Reusable client-side modules that handle specific functionality.
 
     ㅤ
-  - ClientNetwork.luau: 
+  - `ClientNetwork.luau`
 
     Centralized networking module that handles all client-to-server communication. This provides a clean interface for the rest of your client code.
 </Expandable>
@@ -86,22 +86,22 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 
   **The Server folder contains all code that runs exclusively on the server side.**
 
-  - EntryPoints: 
+  - `EntryPoints`
 
     Main server initialization scripts that set up game systems, handle player connections, and start game loops.
 
     ㅤ
-  - Modules: 
+  - `Modules`
 
     Reusable server-side modules that handle specific functionality.
 
     ㅤ
-  - Configuration: 
+  - `Configuration`
 
     Server-specific configuration files that control server behavior.
 
     ㅤ
-  - ServerNetwork.luau: 
+  - `ServerNetwork.luau`
 
     Centralized networking module that handles all server-to-client communication and validates incoming requests.
 </Expandable>
@@ -111,27 +111,27 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 
   **The Shared folder contains code that can be used by both client and server.**
 
-  - Configuration: 
+  - `Configuration`
 
     Shared configuration files.
 
     ㅤ
-  - Products: 
+  - `Products`
 
     monetization-related modules that need to be accessible from both contexts.
 
     ㅤ
-  - Sounds: 
+  - `Sounds`
 
     Sound management modules and sound configurations.
 
     ㅤ
-  - Types: 
+  - `Types`
 
     Type definitions used throughout the codebase. Essential for maintaining type safety.
 
     ㅤ
-  - Utils: 
+  - `Utils`
 
     Utility modules that provide common functionality needed across the entire codebase.
 </Expandable>
@@ -149,22 +149,22 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 
   **The UI folder contains all user interface related code.**
 
-  - Components: 
+  - `Components`
 
     Reusable UI components. These are the building blocks of your interface.
 
     ㅤ
-  - Interfaces: 
+  - `Interfaces`
 
     Complete interface screens and layouts. Each interface represents a distinct screen or major UI section of your game.
 
     ㅤ
-  - Stories: 
+  - `Stories`
 
     UI testing and development stories, typically used with tools like UI labs for UI development and testing.
 
     ㅤ
-  - Utils: 
+  - `Utils`
 
     UI-specific utility modules.
 </Expandable>
