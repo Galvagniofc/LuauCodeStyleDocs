@@ -7,7 +7,7 @@ Effective comments are crucial for code comprehension, especially in collaborati
 
 ## When to Comment
 
-Comments should explain _why_ the code does something, _what_ its purpose is, or _how_ complex logic works, rather than simply restating _what_ the code does (which should be clear from the code itself).
+Comments should explain why the code does something, what its purpose is, or how complex logic works, rather than simply restating what the code does (which should be clear from the code itself).
 
 > ### **Explain Intent and Rationale**
 >
@@ -19,7 +19,7 @@ Comments should explain _why_ the code does something, _what_ its purpose is, or
 >
 > ```luau
 > local ActivePlayers = {} -- {Player}
-> local ActiveWeapons = {} :: {[string]: WeaponStats}
+> local ActiveWeapons: {[string]: WeaponStats} = {}
 > ```
 
 > ### **Highlight Complex Logic**
@@ -65,7 +65,18 @@ Avoid comments that are redundant, misleading, or simply noise. Code should be a
 >
 > ```luau
 > -- INCORRECT
-> local MaxPlayerHealth = 150 -- Maximum player health is 100
+> 
+> --[=[
+> 	Get total damage based on tool damage and player damage attribute	
+> ]=]
+> 
+> local function GetTotalDamage(Damage: number, Multiplier: number)
+> 	return Damage * Multiplier
+> end
+> 
+> return {
+> 	GetTotalDamage = GetTotalDamage
+> }
 > ```
 
 ## Types of Comments
