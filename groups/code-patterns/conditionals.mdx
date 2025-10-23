@@ -1,5 +1,109 @@
 ---
-title: 'Conditionals'
-description: 'Description of your new file.'
+title: "Conditionals"
+description: "Guidelines for writing clear, readable conditional statements and using Guard Clauses to manage control flow."
 ---
 
+Well-structured conditional statements  are vital for code clarity. Our standards focus on using idiomatic Luau patterns and minimizing nesting.
+
+## Avoid Nesting
+
+Deeply nested conditional statements (`if` blocks inside other `if` blocks) significantly reduce code readability and increase cognitive complexity. Avoid this by using `Guard Clauses`.
+
+```luau expandable
+-- INCORRECT
+local function ProcessPlayerAction(Player: Player, Action: ActionType)
+    if Player then
+    	if PlayerAlive then
+    		if Action == "Attack" then
+        		print("Player attacked!")
+    		elseif Action == "Heal" then
+        		print("Player healed!")
+			end
+		end
+	end
+end
+
+-- CORRECT
+local function ProcessPlayerAction(Player: Player, Action: ActionType)
+    if not Player then return end
+    if not PlayerAlive then return end
+
+    if Action == "Attack" then
+        print("Player attacked!")
+    elseif Action == "Heal" then
+        print("Player healed!")
+	end
+end
+```
+
+<Note>
+  A `Guard Clause` is a conditional statement that immediately exits a function (or loop iteration) if a precondition is not met. This flattens the code structure, making the primary logic easier to follow.
+</Note>
+
+## Idiomatic Luau Conditionals
+
+> ### Avoid Explicit Comparisons to `true` or `false`
+>
+> If a variable is already a boolean, do not compare it directly to `true` or `false`.
+>
+> ```luau
+> -- INCORRECT
+> local IsGameActive = true
+> 
+> if IsGameActive == true then
+>     -- ...
+> end
+> 
+> if IsGameActive == false then
+>     -- ...
+> end
+> 
+> -- CORRECT
+> if IsGameActive then
+>     -- ...
+> end
+> 
+> if not IsGameActive then
+>     -- ...
+> end
+> ```
+
+> ### Avoid this anti-pattern.
+>
+> This is a common anti-pattern. Use the boolean expression directly.
+>
+> ```luau
+> -- INCORRECT
+> local function IsPlayerAlive(Health: number): boolean
+>     if Health > 0 then
+>         return true
+>     else
+>         return false
+>     end
+> end
+> 
+> -- CORRECT
+> local function IsPlayerAlive(Health: number): boolean
+>     return Health > 0
+> end
+> ```
+
+> ## Ternary Operators
+>
+> Always use `ternary operators` instead of `if` blocks statements whenever possible.
+>
+> ```luau
+> local ImageTransparency = State and 0 or 1
+> ```
+
+## Conditional Formatting
+
+> ### Spacing and Parentheses
+>
+> Use consistent spacing around conditional operators and parentheses to group complex expressions.
+>
+> ```luau
+> if (PlayerHealth < 50) and (PlayerLevel > 10) then
+>     -- ...
+> end
+> ```

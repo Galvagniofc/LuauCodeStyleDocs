@@ -51,41 +51,6 @@ end
   You don't necessarily need to add comments to separate each section.
 </Info>
 
-## Avoid Nesting
-
-Deeply nested conditional statements (`if` blocks inside other `if` blocks) significantly reduce code readability and increase cognitive complexity. Avoid this by using `Guard Clauses`.
-
-```luau expandable
--- INCORRECT
-local function ProcessPlayerAction(Player: Player, Action: ActionType)
-    if Player then
-    	if PlayerAlive then
-    		if Action == "Attack" then
-        		print("Player attacked!")
-    		elseif Action == "Heal" then
-        		print("Player healed!")
-			end
-		end
-	end
-end
-
--- CORRECT
-local function ProcessPlayerAction(Player: Player, Action: ActionType)
-    if not Player then return end
-    if not PlayerAlive then return end
-
-    if Action == "Attack" then
-        print("Player attacked!")
-    elseif Action == "Heal" then
-        print("Player healed!")
-	end
-end
-```
-
-<Note>
-  A `Guard Clause` is a conditional statement that immediately exits a function (or loop iteration) if a precondition is not met. This flattens the code structure, making the primary logic easier to follow.
-</Note>
-
 ## Whitespacing
 
 Here’s a good example of separating stuff with whitespacing:
