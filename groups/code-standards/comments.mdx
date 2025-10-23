@@ -13,6 +13,15 @@ Comments should explain _why_ the code does something, _what_ its purpose is, or
 >
 > Use comments to clarify the reasoning behind a particular design choice, a non-obvious algorithm, or a workaround for a specific bug or platform limitation.
 
+> ### **Empty Table Comments**
+>
+> When creating empty tables, include a comment or a type indicating what will be stored in them.
+>
+> ```luau
+> local ActivePlayers = {} -- {Player}
+> local ActiveWeapons = {} :: {[string]: WeaponStats}
+> ```
+
 > ### **Highlight Complex Logic**
 >
 > For algorithms or complex calculations that are not immediately obvious, provide a high-level explanation.
@@ -50,7 +59,7 @@ Avoid comments that are redundant, misleading, or simply noise. Code should be a
 > end
 > ```
 
-> ### 🚫 **Outdated or Misleading Comments**
+> ### **Outdated or Misleading Comments**
 >
 > An outdated comment is worse than no comment at all, as it can actively mislead developers. If the code changes, ensure the comments are updated accordingly.
 >

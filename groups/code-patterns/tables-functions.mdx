@@ -1,5 +1,90 @@
 ---
-title: 'Tables & Functions'
-description: 'Description of your new file.'
+title: "Tables & Functions"
+description: "Best practices for defining, structuring, and manipulating tables and functions in Luau, emphasizing clarity and performance."
 ---
 
+Tables and functions are the backbone of Luau programming. Following consistent patterns for their definition and usage is crucial for writing idiomatic, high-performance, and maintainable code.
+
+## Tables
+
+Tables in Luau serve as both arrays (lists) and dictionaries (maps). Clear distinction and consistent formatting are key.
+
+> ### Formatting and Spacing
+>
+> Use consistent formatting for array-like and dictionary-like tables.
+
+> #### Array-like Tables (Lists)
+>
+> Use a single line for small, simple lists. Use a new line for each element in larger or complex lists.
+>
+> ```luau
+> -- Small lists on a single line
+> local Colors = {"Red", "Green", "Blue"}
+> 
+> -- Large or complex lists, one item per line
+> local PlayerNames = {
+>     "AlphaPlayer",
+>     "BetaTester",
+>     "GammaUser",
+>     "DeltaDev",
+> }
+> ```
+
+> #### Dictionary-like Tables (Maps)
+>
+> Use a new line for each key-value pair.
+>
+> ```luau
+> local PlayerStats = {
+>     MaxHealth = 100,
+>     WalkSpeed = 16,
+>     Attributes = {
+> 		Luck = 2,
+> 		Strenght = 5,
+> 	},
+> }
+> ```
+
+> ### Table Access
+>
+> Use dot notation (`.`) for accessing keys that are valid Luau identifiers. Use bracket notation (`[]`) only when the key contains spaces, or is a number.
+>
+> ```luau
+> local PlayerData = {
+>     Name = "Galvagni",
+>     ["Last Login"] = os.time(),
+> } 
+> 
+> -- CORRECT
+> local PlayerName = PlayerData.Name
+> local LastLogin = PlayerData["Last Login"]
+> 
+> -- INCORRECT
+> local PlayerName = PlayerData["Name"]
+> ```
+
+## Functions
+
+Functions should be small, focused, and follow clear naming conventions.
+
+> ### Single Responsibility Principle (SRP)
+>
+> A function should only do one thing. If a function is complex, break it down into smaller.
+
+> ### Pure Functions
+>
+> Prioritize `Pure Functions` functions that, given the same input, will always return the same output, and have no side effects (they do not modify external state or global variables).
+>
+> ```luau
+> -- PURE FUNCTION
+> local function CalculateFinalDamage(BaseDamage: number, Multiplier: number): number
+>     return BaseDamage * Multiplier
+> end
+> 
+> -- IMPURE FUNCTION
+> local GlobalDamageMultiplier = 1.0
+> 
+> local function ApplyDamage(Target: TargetType, Damage: number)
+>     Target.Health -= Damage * GlobalDamageMultiplier -- External state dependency
+> end
+> ```
