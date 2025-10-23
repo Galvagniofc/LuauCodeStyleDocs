@@ -1,5 +1,206 @@
 ---
-title: 'Organization'
-description: 'Description of your new file.'
+title: "Code Organization"
+description: "Learn how to organize your Luau code for maximum readability, maintainability, and consistency across your projects."
 ---
 
+Proper code organization is essential for maintaining large codebases and enabling effective team collaboration. Our organization standards ensure that every script follows a predictable structure, making code easier to read, understand, and maintain.
+
+## Variable Declaration Order
+
+All scripts must follow a **strict order** for variable declarations. This creates a predictable structure that developers can quickly scan and understand.
+
+```lua
+-- 1. Services
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- 2. Modules
+local PlayerManager = require(...)
+local WeaponController = require(...)
+
+-- 3. Assets
+local SoundEffects = :WaitForChild("SoundEffects")
+local WeaponModels = :WaitForChild("WeaponModels")
+
+-- 4. Settings/Constants
+local MaxPlayerHealth = 100
+local CRITICAL_HIT_MULTIPLIER = 2.5
+
+-- 5. Variables
+local CurrentPlayer = Players.LocalPlayer
+local PlayerInventory = {} -- {...}
+
+-- 6. Types
+type PlayerData = {
+    Name: string,
+    Health: number
+}
+
+-- 7. Auxiliary Functions
+local function CalculateDamage(BaseDamage, Multiplier)
+    return BaseDamage * Multiplier
+end
+
+-- 8. Main Functions
+local function AttackAction(Player)
+	...
+end
+```
+
+## Avoid Nesting
+
+Deeply nested conditional statements (`if` blocks inside other `if` blocks) significantly reduce code readability and increase cognitive complexity. Avoid this by using `Guard Clauses`.
+
+A `Guard Clause` is a conditional statement that immediately exits a function (or loop iteration) if a precondition is not met. This flattens the code structure, making the primary logic easier to follow.
+
+```luau expandable
+-- INCORRECT
+local function ProcessPlayerAction(Player: Player, Action: ActionType)
+    if Player then
+    	if PlayerAlive then
+    		if Action == "Attack" then
+        		print("Player attacked!")
+    		elseif Action == "Heal" then
+        		print("Player healed!")
+			end
+		end
+	end
+end
+
+-- CORRECT
+local function ProcessPlayerAction(Player: Player, Action: ActionType)
+    if not Player then return end
+    if not PlayerAlive then return end
+
+    if Action == "Attack" then
+        print("Player attacked!")
+    elseif Action == "Heal" then
+        print("Player healed!")
+	end
+end
+```
+
+## Whitespacing
+
+Here’s a good example of separating stuff with whitespacing:
+
+```lua expandable
+local Players = game:GetService("Players")
+local ReplicatedFirst = game:GetService("ReplicatedFirst")
+local TextChatService = game:GetService("TextChatService")
+
+local Bin = require(ReplicatedFirst.Packages.Bin)
+
+local CustomEmotesList = {}
+local AnimationsCache = {}
+local TracksCache = {}
+
+local Enabled = false
+local RandomGen = Random.new()
+local CurrentTrack
+
+local Add, Empty = Bin()
+
+local function StopCurrentTrack()
+    if not CurrentTrack then return end
+
+	CurrentTrack:Stop()
+	CurrentTrack = nil
+end
+
+local function MessageMatchesTriggerWord(Message: string, TriggerWord: string): boolean
+    local Pattern = `[%p%s] {string.lower(TriggerWord)} [%p%s]`
+	Message = `" " {string.lower(Message)} " "`
+
+	return string.find(Message, Pattern) ~= nil
+end
+
+local function GetEmoteFromMessage(Message: string): (string?, string?)
+	local Candidates = {}
+
+	for _, Emote in CustomEmotesList do
+		for _, TriggerWord in Emote.TriggerWords do
+            if not MessageMatchesTriggerWord(Message, TriggerWord) then continue end
+
+			table.insert(Candidates, {Animation = Emote.AnimationId, TriggerWord = TriggerWord})
+		end
+	end
+
+	if #Candidates == 0 then return end
+
+	local Chosen = Candidates[RandomGen:NextInteger(1, #Candidates)]
+	return Chosen.Animation, Chosen.TriggerWord
+end
+
+local function SetTriggerWordsForChatAnimation(AnimationId: string, TriggerWords: {string})
+	CustomEmotesList[AnimationId] = {
+		AnimationId = AnimationId,
+		TriggerWords = TriggerWords,
+	}
+end
+
+local function OnCharacterAdded(Character)
+	local Humanoid = Character:WaitForChild("Humanoid")
+
+	Add(Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(StopCurrentTrack))
+	Add(Humanoid.Jumping:Connect(StopCurrentTrack))
+end
+
+local function OnChatted(Message: string)
+	local AnimationId = GetEmoteFromMessage(Message)
+	local Character = Players.LocalPlayer.Character
+	local Humanoid = Character and Character:FindFirstChild("Humanoid")
+	local Animator = Humanoid and Humanoid:FindFirstChild("Animator")
+
+    if not AnimationId or not Animator then return end
+
+	if not AnimationsCache[AnimationId] then
+		local Animation = Instance.new("Animation")
+		Animation.AnimationId = AnimationId
+		AnimationsCache[AnimationId] = Animation
+	end
+
+	if not TracksCache[AnimationId] then
+		TracksCache[AnimationId] = Animator:LoadAnimation(AnimationsCache[AnimationId])
+	end
+
+    StopCurrentTrack()
+
+	CurrentTrack = TracksCache[AnimationId]
+	if not CurrentTrack then return end
+
+	CurrentTrack.Priority = Enum.AnimationPriority.Action
+	CurrentTrack:Play()
+end
+
+local function Enable()
+	if Enabled then return end
+    Enabled = true
+
+	local Player = Players.LocalPlayer
+    if Player.Character then task.spawn(function() OnCharacterAdded(Player.Character) end) end
+	Player.CharacterAdded:Once(OnCharacterAdded)
+
+	Add(TextChatService.SendingMessage:Connect(function(Message: TextChatMessage)
+        OnChatted(Message.Text)
+    end))
+end
+
+local function Disable()
+	if not Enabled then return end
+
+	StopCurrentTrack()
+	Empty()
+	Enabled = false
+end
+
+return {
+    Enable = Enable,
+    Disable = Disable,
+    SetTriggerWordsForChatAnimation = SetTriggerWordsForChatAnimation
+}
+```
+
+<Note>
+  **Consistency is Key**: The most important aspect of code organization is consistency. Once you establish a pattern, apply it uniformly across all your scripts.
+</Note>
