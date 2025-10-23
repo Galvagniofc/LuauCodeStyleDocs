@@ -3,15 +3,11 @@ title: "Tables & Functions"
 description: "Best practices for defining, structuring, and manipulating tables and functions in Luau, emphasizing clarity and performance."
 ---
 
-Tables and functions are the backbone of Luau programming. Following consistent patterns for their definition and usage is crucial for writing idiomatic, high-performance, and maintainable code.
-
 ## Tables
 
-Tables in Luau serve as both arrays (lists) and dictionaries (maps). Clear distinction and consistent formatting are key.
+### Formatting and Spacing
 
-> ### Formatting and Spacing
->
-> Use consistent formatting for array-like and dictionary-like tables.
+Use consistent formatting for array-like and dictionary-like tables.
 
 > #### Array-like Tables (Lists)
 >
@@ -80,11 +76,53 @@ Functions should be small, focused, and follow clear naming conventions.
 > local function CalculateFinalDamage(BaseDamage: number, Multiplier: number): number
 >     return BaseDamage * Multiplier
 > end
+> ```
+
+> ### Function Parameters
+>
+> Functions should keep their parameter list short and easy to read. When a function requires more than 4–5 parameters, readability and maintainability can decrease significantly.
+>
+> #### Line Break
+>
+> When a function needs multiple parameters, split them into separate lines for better visual clarity.
+>
+> ```luau
+> local function HasEquippedItem(
+> 	Player: Player,
+>    	Item: Item,
+>    	Amount: number,
+>    	Slot: number,
+>    	Attributes: Attributes
+> ): boolean
 > 
-> -- IMPURE FUNCTION
-> local GlobalDamageMultiplier = 1.0
-> 
-> local function ApplyDamage(Target: TargetType, Damage: number)
->     Target.Health -= Damage * GlobalDamageMultiplier -- External state dependency
+>    -- ...
 > end
 > ```
+>
+> #### Table Parameter
+>
+> If the function takes several related parameters, use a table (object-style) instead. This improves flexibility and avoids confusion about parameter order.
+>
+> ```luau
+> type EquippedItemConfig = {
+>     Player: Player,
+>     Item: Item,
+>     Amount: number,
+>     Slot: number,
+>     Attributes: Attributes
+> }
+> 
+> local function HasEquippedItem(Config: EquippedItemConfig): boolean
+>     local Player = Config.Player
+>     local Item = Config.Item
+>     local Amount = Config.Amount
+>     local Slot = Config.Slot
+>     local Attributes = Config.Attributes
+> 
+>     -- ...
+> end
+> ```
+
+<Note>
+  Functions with excessive parameters are harder to understand, test, and refactor. Always prefer readability and clear intent over compactness.
+</Note>
