@@ -1,5 +1,115 @@
 ---
-title: 'Comments'
-description: 'Description of your new file.'
+title: "Comments"
+description: "Guidelines for writing effective comments that enhance code understanding without being redundant or misleading."
 ---
 
+Effective comments are crucial for code comprehension, especially in collaborative environments or when revisiting code after some time. This section outlines our standards for writing comments that add value without cluttering the codebase.
+
+## When to Comment
+
+Comments should explain _why_ the code does something, _what_ its purpose is, or _how_ complex logic works, rather than simply restating _what_ the code does (which should be clear from the code itself).
+
+> ### **Explain Intent and Rationale**
+>
+> Use comments to clarify the reasoning behind a particular design choice, a non-obvious algorithm, or a workaround for a specific bug or platform limitation.
+
+> ### **Highlight Complex Logic**
+>
+> For algorithms or complex calculations that are not immediately obvious, provide a high-level explanation.
+
+> ### **Document Work-in-Progress or Temporary Code**
+>
+> Use comments to mark code that is temporary, incomplete, or needs future attention.
+>
+> ```luau
+> -- TODO: Implement proper error handling for network failures.
+> local function SendDataToServer(Data: DataType)
+>     -- ...
+> end
+> 
+> -- HACK: This is a temporary fix until the new physics system is integrated.
+> local function ApplyForce(Part: Part, Direction: number)
+>     Part.Velocity = Direction * 50 -- Direct velocity manipulation
+> end
+> ```
+
+## What NOT to Comment
+
+Avoid comments that are redundant, misleading, or simply noise. Code should be as self-documenting as possible through clear naming and logical structure.
+
+> ### **Redundant Comments**
+>
+> Do not write comments that merely repeat what the code already clearly states. Good code is its own best documentation.
+>
+> ```luau
+> -- INCORRECT
+> local PlayerName = "Guest" -- Declare a variable named PlayerName and assign "Guest" to it.
+> 
+> if IsActive then -- Check if IsActive is true.
+>     -- ...
+> end
+> ```
+
+> ### 🚫 **Outdated or Misleading Comments**
+>
+> An outdated comment is worse than no comment at all, as it can actively mislead developers. If the code changes, ensure the comments are updated accordingly.
+>
+> ```luau
+> -- INCORRECT
+> local MaxPlayerHealth = 150 -- Maximum player health is 100
+> ```
+
+## Types of Comments
+
+> ### **Script Descriptions**
+>
+> Every script should start with a multi-line comment describing its purpose, main functionalities, and any important usage notes. This acts as a high-level overview for anyone using or maintaining the script.
+>
+> ```luau
+> --[=[
+> 	Calls the given callback for all existing players in the game, and any that join thereafter.
+> ]=]
+> 
+> local Players = game:GetService("Players")
+> 
+> local function SafePlayerAdded(Callback: (Player) -> nil)
+> 	for _, Player in Players:GetPlayers() do
+> 		task.spawn(Callback, Player)
+> 	end
+> 
+> 	return Players.PlayerAdded:Connect(Callback)
+> end
+> 
+> return SafePlayerAdded
+> ```
+
+> ### **Function and Parameter Descriptions**
+>
+> For complex or public functions, use comments to describe their purpose, parameters, return values, and any potential side effects.
+>
+> ```luau
+> --[=[
+>     Checks if a given player possesses all the specified items in their inventory.
+> 
+>     @param Player The Player instance.
+>     @param RequiredItems A table of item IDs and quantities required.
+> 
+>     @return boolean
+> ]=]
+> 
+> local function HasPlayerItems(Player: Player, RequiredItems: RequiredItems): boolean
+>     -- ...
+> end
+> ```
+
+<Note>
+  **Update Comments Regularly**: Always update comments when the code they describe changes. Outdated comments are misleading and harmful.
+</Note>
+
+<Tip>
+  **Focus on the "Why"**: Instead of explaining _what_ the code does, focus on _why_ it does it, or _what problem_ it solves.
+</Tip>
+
+<Warning>
+  **Avoid Over-Commenting**: Too many comments can be as detrimental as too few. Strive for clarity in your code first, and use comments to supplement, not replace, that clarity.
+</Warning>
