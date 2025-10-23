@@ -18,23 +18,23 @@ local Players = game:GetService("Players")
 local PlayerManager = require(...)
 local WeaponController = require(...)
 
--- 3. Assets
-local SoundEffects = :WaitForChild("SoundEffects")
-local WeaponModels = :WaitForChild("WeaponModels")
-
--- 4. Settings/Constants
-local MaxPlayerHealth = 100
-local CRITICAL_HIT_MULTIPLIER = 2.5
-
--- 5. Variables
-local CurrentPlayer = Players.LocalPlayer
-local PlayerInventory = {} -- {...}
-
--- 6. Types
+-- 3. Types
 type PlayerData = {
     Name: string,
     Health: number
 }
+
+-- 4. Assets
+local SoundEffects = :WaitForChild("SoundEffects")
+local WeaponModels = :WaitForChild("WeaponModels")
+
+-- 5. Settings/Constants
+local MaxPlayerHealth = 100
+local CRITICAL_HIT_MULTIPLIER = 2.5
+
+-- 6. Variables
+local CurrentPlayer = Players.LocalPlayer
+local PlayerInventory = {} -- {...}
 
 -- 7. Auxiliary Functions
 local function CalculateDamage(BaseDamage, Multiplier)
@@ -91,13 +91,23 @@ local TextChatService = game:GetService("TextChatService")
 
 local Bin = require(ReplicatedFirst.Packages.Bin)
 
-local CustomEmotesList = {}
-local AnimationsCache = {}
-local TracksCache = {}
+type CustomEmote = {
+	AnimationId: string,
+	TriggerWords: {string}
+}
 
-local Enabled = false
-local RandomGen = Random.new()
-local CurrentTrack
+type EmoteCandidate = {
+	Animation: string,
+	TriggerWord: string,
+}
+
+local CustomEmotesList: {[string]: CustomEmote} = {}
+local AnimationsCache: {[string]: Animation} = {}
+local TracksCache: {[string]: AnimationTrack} = {}
+
+local Enabled: boolean = false
+local RandomGen: Random = Random.new()
+local CurrentTrack: AnimationTrack? = nil
 
 local Add, Empty = Bin()
 
@@ -116,7 +126,7 @@ local function MessageMatchesTriggerWord(Message: string, TriggerWord: string): 
 end
 
 local function GetEmoteFromMessage(Message: string): (string?, string?)
-	local Candidates = {}
+	local Candidates: {EmoteCandidate} = {}
 
 	for _, Emote in CustomEmotesList do
 		for _, TriggerWord in Emote.TriggerWords do
@@ -140,7 +150,7 @@ local function SetTriggerWordsForChatAnimation(AnimationId: string, TriggerWords
 end
 
 local function OnCharacterAdded(Character)
-	local Humanoid = Character:WaitForChild("Humanoid")
+	local Humanoid = Character:WaitForChild("Humanoid") :: Humanoid
 
 	Add(Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(StopCurrentTrack))
 	Add(Humanoid.Jumping:Connect(StopCurrentTrack))
@@ -150,7 +160,7 @@ local function OnChatted(Message: string)
 	local AnimationId = GetEmoteFromMessage(Message)
 	local Character = Players.LocalPlayer.Character
 	local Humanoid = Character and Character:FindFirstChild("Humanoid")
-	local Animator = Humanoid and Humanoid:FindFirstChild("Animator")
+	local Animator: Animator = Humanoid and Humanoid:FindFirstChild("Animator")
 
     if not AnimationId or not Animator then return end
 
