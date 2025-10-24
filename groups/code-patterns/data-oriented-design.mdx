@@ -1,5 +1,95 @@
 ---
-title: 'Data Oriented Design'
-description: 'Description of your new file.'
+title: "Data-Oriented Design (DOD)"
+description: "Our core philosophy: structuring data for optimal performance and maintainability, prioritizing systems over objects."
 ---
 
+Data-Oriented Design is the cornerstone of our development philosophy. Unlike Object-Oriented Programming (OOP), which focuses on encapsulating data and behavior into objects, DOD focuses on organizing and structuring **data** for optimal processing and performance.
+
+In Games development, this approach is critical for managing large numbers of entities (e.g., bullets, enemies, particles) efficiently, leading to better **cache locality** and easier **parallelization**.
+
+<Note>
+  I personally prefer using DOD over OOP, even in cases where it doesn’t make any noticeable difference in performance.
+</Note>
+
+### Structure Data for Processing
+
+Organize your data so that elements that are processed together are stored together. This is the essence of **cache locality**.
+
+```lua
+local EnemyData: EnemyData = {
+    Positions = {Vector3.new(10, 0, 10), Vector3.new(20, 0, 20)},
+    Healths = {100, 50},
+    Speeds = {16, 16},
+}
+```
+
+### Constructor
+
+Since you no longer pass around "objects," entities are referenced by a unique ID (often simply the index in the array).
+
+```lua
+-- ...
+
+local NextEnemyId = 1
+
+local function CreateEnemy(EnemyProperties: Types.EnemyProperties): number
+	local EnemyID = NextEnemyId
+	NextEnemyId += 1
+
+	EnemyData.Positions[EnemyID] = EnemyProperties.Position
+	EnemyData.Healths[EnemyID] = EnemyProperties.Health
+	EnemyData.Speeds[EnemyID] = EnemyProperties.Speed
+
+	return EnemyID
+end
+```
+
+### Format and Structure
+
+```lua
+type EnemyData = {
+	Positions: {Vector3},
+	Healths: {number},
+	Speeds: {number}
+}
+
+local EnemyData: EnemyData = {
+    Positions = {Vector3.new(10, 0, 10), Vector3.new(20, 0, 20)},
+    Healths = {100, 50},
+    Speeds = {16, 16},
+}
+
+local NextEnemyId = 1
+
+local function CreateEnemy(EnemyProperties: Types.EnemyProperties): number
+	local EnemyID = NextEnemyId
+	NextEnemyId += 1
+
+	EnemyData.Positions[EnemyID] = EnemyProperties.Position
+	EnemyData.Healths[EnemyID] = EnemyProperties.Health
+	EnemyData.Speeds[EnemyID] = EnemyProperties.Speed
+
+	return EnemyID
+end
+
+local function SetEnemiesPosition(DesiredPosition: Vector3)
+	for _, CurrentPosition in EnemyData do
+		CurrentPosition = DesiredPosition
+	end
+end
+
+local function ApplyDamage(EnemyID: number, Damage: number)
+	local CurrentHealth = EnemyData.Healths[EnemyID]
+	if not CurrentHealth then return end
+
+	EnemyData.Healths[EnemyID] = math.max(0, CurrentHealth - Damage)
+end
+
+-- ...
+
+return {
+	CreateEnemy = CreateEnemy,
+	SetEnemiesPosition = SetEnemiesPosition,
+	ApplyDamage = ApplyDamage
+}
+```
