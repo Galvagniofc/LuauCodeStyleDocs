@@ -24,7 +24,7 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 {
     "emitLegacyScripts": false,
 
-    "name": "Project-Name",
+    "name": "BlockParty",
     "tree": {
       "$className": "DataModel",
 
@@ -33,11 +33,9 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
         "$path": "Source/Shared",
 
         "Client": {
-            "$ignoreUnknownInstances": true,
             "$path": "Source/Client",
 
             "UI": {
-                "$ignoreUnknownInstances": true,
                 "$path": "Source/UI"
             }
         }
@@ -48,14 +46,17 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
         "$path": "Source/SharedFirst",
 
         "Packages": {
-          "$ignoreUnknownInstances": true,
           "$path": "roblox_packages"
         }
       },
 
       "ServerScriptService": {
         "$ignoreUnknownInstances": true,
-        "$path": "Source/Server"
+        "$path": "Source/Server",
+
+        "ServerPackages": {
+            "$path": "ServerPackages"
+        }
       }
   }
 }

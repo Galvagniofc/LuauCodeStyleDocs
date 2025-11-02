@@ -31,7 +31,8 @@
             "pages": [
               "groups/code-standards/naming-conventions",
               "groups/code-standards/organization",
-              "groups/code-standards/comments"
+              "groups/code-standards/comments",
+              "groups/code-standards/roblox-guidelines"
             ]
           },
           {
@@ -40,6 +41,12 @@
               "groups/code-patterns/conditionals",
               "groups/code-patterns/tables-functions",
               "groups/code-patterns/data-oriented-design"
+            ]
+          },
+          {
+            "group": "Roblox Guidelines",
+            "pages": [
+              "groups/roblox-guidelines/best-practices"
             ]
           }
         ]

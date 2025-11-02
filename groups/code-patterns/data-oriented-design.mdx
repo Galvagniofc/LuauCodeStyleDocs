@@ -7,6 +7,10 @@ description: "Data-Oriented Design (DOD) is an approach to programming that focu
   I prefer using DOD over OOP, even in cases where it doesn’t make any noticeable difference in performance.
 </Note>
 
+### Avoid Metatables
+
+Metatables are complex and should be avoided. The most common use case is for implementing classes through `__index`, but this can be solved using a Data-Oriented Design (DOD) approach.
+
 ### Structure Data for Processing
 
 Organize your data so that elements that are processed together are stored together. This is the essence of **cache locality**.

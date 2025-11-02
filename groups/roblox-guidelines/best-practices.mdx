@@ -1,0 +1,123 @@
+---
+title: "Roblox Guidelines"
+description: "Roblox Platform-specific best practices."
+---
+> ## Service Access
+>
+> Always use the dedicated `game:GetService("ServiceName")` method to retrieve Roblox services. Never use direct property access (e.g., `game.Players`).
+
+> ## WaitForChild
+>
+> The use of`:WaitForChild()`should be **highly restricted**. In most cases, direct access (`Instance.ChildName`). Only use in this cases:
+>
+> <Expandable title="Runtime Creation">
+>   When the server creates or replicates objects during runtime (e.g., a model cloned from `ServerStorage` into `Workspace` after the player joins.)
+> </Expandable>
+> <Expandable title="Streaming Enabled">
+>   When `StreamingEnabled` is on, use it for objects in `Workspace`.
+> </Expandable>
+> <Expandable title="ReplicatedFirst Scripts">
+>   LocalScripts inside `ReplicatedFirst` run before `game.Loaded`, so use `:WaitForChild()` to access instances outside of `ReplicatedFirst`.
+> </Expandable>
+
+> ## Input Validation (Server-Side)
+>
+> **Never trust the client.** All data received from the client via a RemoteEvent or RemoteFunction **must** be validated on the server.
+>
+> ```luau
+> -- INCORRECT
+> RemoteEvent.OnServerEvent:Connect(function(Player: Player, Damage: number)
+>     Player.Health -= Damage
+> end)
+> 
+> -- CORRECT
+> RemoteEvent.OnServerEvent:Connect(function(Player: Player, Damage: number)
+>     if type(Damage) ~= "number" then return end
+> 	if Damage ~= Damage then return end -- NaN check
+> 
+>     Player.Health -= Damage
+> end)
+> ```
+>
+> <Note>
+>   Some network libraries, like Zap, already perform type checking internally, so you don't need to do it yourself.
+> </Note>
+
+> ## Asynchronous Code
+>
+> In Luau, many operations — such as DataStore calls, HTTP requests, or player-related events — are yielding. A yielding function pauses the current thread until the operation completes.
+>
+> To handle asynchronous operations safely and consistently, you can use either:
+>
+> - `pcall` for simple error handling.
+> - a **Promise-based library**, such as `Future`, for more structured async workflows (chaining, cancellation, etc.).
+>
+> ```luau
+> local Players = game:GetService("Players")
+> 
+> local function LoadDataFuture(Player): boolean
+>     return pcall(function()
+>         -- 1. Get data (Async operation)
+>         local Data = DataStoreService:GetAsync("Player-" .. Player.UserId)
+>     end)
+> end
+> ```
+
+> ## Client/Server Boundary
+>
+> A clear understanding of the Client/Server boundary is essential for secure and efficient game architecture.
+>
+> | Context     | Client (`LocalScript`)                                        | Server (`Script`)                                             |
+> | :---------- | :------------------------------------------------------------ | :------------------------------------------------------------ |
+> | **Control** | Controls its own visuals, input, and local physics.           | Controls the authoritative game state, physics, and security. |
+> | **Trust**   | **Untrusted**. Never rely on client-side checks for security. | **Trusted**. Authority for all critical game logic.           |
+> | **Role**    | Presentation and User Input.                                  | Simulation and Validation.                                    |
+> | **Access**  | Can only read most of the game.                               | Can read and write the entire game.                           |
+>
+> Any action that affects the core game state (e.g., dealing damage, granting currency, moving critical parts) **must** be validated and executed on the Server. The Client's role is to request the action and handle the visual representation.
+
+> ## Object Pooling
+>
+> Object Pooling is a performance optimization pattern used to reuse instances instead of constantly creating and destroying them. This significantly reduces garbage collection overhead and improves frame rate consistency, especially for effects like bullets, particles, or temporary visuals.
+>
+> ### Pooling Pattern
+>
+> 1. **Pool**: A table that holds instances that are currently unused.
+> 2. **Acquire**: When an instance is needed, check the pool first. If available, reuse it. If not, create a new one.
+> 3. **Release**: When the instance is no longer needed, return it to the pool instead of destroying it.
+>
+> ```luau expandable
+> local ReplicatedStorage = game:GetService("ReplicatedStorage")
+> local Workspace = game:GetService("Workspace")
+> 
+> local BulletTemplate = ReplicatedStorage.Assets.BulletTemplate
+> 
+> local BulletPool = {}
+> 
+> local function AcquireBullet(): Part
+> 	local Bullet = table.remove(BulletPool)
+> 
+> 	if Bullet then
+> 		Bullet.Transparency = 0
+> 	else
+> 		Bullet = BulletTemplate:Clone()
+> 	end
+> 
+> 	Bullet.Parent = Workspace
+> 	return Bullet
+> end
+> 
+> local function ReleaseBullet(Bullet: Part)
+> 	Bullet.Velocity = Vector3.zero
+> 	Bullet.RotVelocity = Vector3.zero
+> 	Bullet.CanCollide = false
+> 	Bullet.Parent = Workspace
+> 
+> 	table.insert(BulletPool, bullet)
+> end
+> 
+> local Bullet = AcquireBullet()
+> Bullet.Position = Player.Character.Head.Position
+> 
+> task.delay(2, ReleaseBullet, Bullet)
+> ```

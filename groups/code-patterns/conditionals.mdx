@@ -90,10 +90,20 @@ end
 
 > ## Ternary Operators
 >
-> Always use `ternary operators` instead of `if` blocks statements whenever possible.
+> Always use the Luau `if-then-else` expression for ternary operations, as the`and/or` pattern fails when the true value is `false` or `nil`.
 >
 > ```luau
-> local ImageTransparency = State and 0 or 1
+> -- INCORRECT EXAMPLE
+> Color == "Blue" and nil or "Red"
+> 
+> Step 1. The left side is truthy, so return the right side.
+> 
+> nil or "Red"
+> 
+> Step 2. The left side is falsy, so return the right side.
+> 
+> -- CORRECT EXAMPLE
+> if Color == "Blue" then nil else "Red"
 > ```
 
 ## Conditional Formatting
