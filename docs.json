@@ -31,8 +31,7 @@
             "pages": [
               "groups/code-standards/naming-conventions",
               "groups/code-standards/organization",
-              "groups/code-standards/comments",
-              "groups/code-standards/roblox-guidelines"
+              "groups/code-standards/comments"
             ]
           },
           {
