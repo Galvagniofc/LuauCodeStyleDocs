@@ -3,11 +3,15 @@ title: "Comments"
 description: "Guidelines for writing effective comments that enhance code understanding without being redundant or misleading."
 ---
 
-Effective comments are crucial for code comprehension, especially in collaborative environments or when revisiting code after some time. This section outlines our standards for writing comments that add value without cluttering the codebase.
+Effective comments are crucial for code comprehension, especially in collaborative environments or when revisiting code after some time. This section outlines standards for writing comments that add value without cluttering the codebase.
 
 ## When to Comment
 
 Comments should explain why the code does something, what its purpose is, or how complex logic works, rather than simply restating what the code does (which should be clear from the code itself).
+
+<Tip>
+  **Focus on the "Why"**: Instead of explaining _what_ the code does, focus on _why_ it does it, or _what problem_ it solves.
+</Tip>
 
 > ### **Explain Intent and Rationale**
 >
@@ -41,6 +45,10 @@ Comments should explain why the code does something, what its purpose is, or how
 >     Part.Velocity = Direction * 50 -- Direct velocity manipulation
 > end
 > ```
+
+<Note>
+  **Update Comments Regularly**: Always update comments when the code they describe changes. Outdated comments are misleading and harmful.
+</Note>
 
 ## What NOT to Comment
 
@@ -121,14 +129,6 @@ Avoid comments that are redundant, misleading, or simply noise. Code should be a
 >     -- ...
 > end
 > ```
-
-<Note>
-  **Update Comments Regularly**: Always update comments when the code they describe changes. Outdated comments are misleading and harmful.
-</Note>
-
-<Tip>
-  **Focus on the "Why"**: Instead of explaining _what_ the code does, focus on _why_ it does it, or _what problem_ it solves.
-</Tip>
 
 <Warning>
   **Avoid Over-Commenting**: Too many comments can be as detrimental as too few. Strive for clarity in your code first, and use comments to supplement, not replace, that clarity.

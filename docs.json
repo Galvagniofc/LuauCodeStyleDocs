@@ -20,13 +20,6 @@
             ]
           },
           {
-            "group": "Project Structure",
-            "pages": [
-              "groups/project-structure/structure",
-              "groups/project-structure/packages"
-            ]
-          },
-          {
             "group": "Code Standards",
             "pages": [
               "groups/code-standards/naming-conventions",
@@ -38,14 +31,21 @@
             "group": "Code Patterns",
             "pages": [
               "groups/code-patterns/conditionals",
-              "groups/code-patterns/tables-functions",
-              "groups/code-patterns/data-oriented-design"
+              "groups/code-patterns/tables-functions"
             ]
           },
           {
             "group": "Roblox Guidelines",
             "pages": [
               "groups/roblox-guidelines/best-practices"
+            ]
+          },
+          {
+            "group": "Extra Resources",
+            "pages": [
+              "groups/extra-resources/structure",
+              "groups/extra-resources/packages",
+              "groups/extra-resources/data-oriented-design"
             ]
           }
         ]
