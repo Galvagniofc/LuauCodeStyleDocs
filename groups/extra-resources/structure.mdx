@@ -52,11 +52,7 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
 
       "ServerScriptService": {
         "$ignoreUnknownInstances": true,
-        "$path": "Source/Server",
-
-        "ServerPackages": {
-            "$path": "ServerPackages"
-        }
+        "$path": "Source/Server"
       }
   }
 }
@@ -72,13 +68,6 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
   - `EntryPoints`
 
     Contains the main initialization scripts that bootstrap your client-side systems. These are typically the first scripts to run when a player joins.
-
-    ㅤ
-  - `Modules`
-
-    Reusable client-side modules that handle specific functionality.
-
-    ㅤ
   - `ClientNetwork.luau`
 
     Centralized networking module that handles all client-to-server communication. This provides a clean interface for the rest of your client code.
@@ -117,23 +106,14 @@ This folder structure is designed specifically for `Rojo` workflow integration. 
   - `Configuration`
 
     Shared configuration files.
+  - `Modules`
 
-    ㅤ
-  - `Products`
-
-    monetization-related modules that need to be accessible from both contexts.
-
-    ㅤ
-  - `Sounds`
-
-    Sound management modules and sound configurations.
+    Reusable server/client-side modules that handle specific functionality. 
 
     ㅤ
   - `Types`
 
-    Type definitions used throughout the codebase. Essential for maintaining type safety.
-
-    ㅤ
+    Type definitions used throughout the codebase. Essential for maintaining type safety. ㅤ
   - `Utils`
 
     Utility modules that provide common functionality needed across the entire codebase.
